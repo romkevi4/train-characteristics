@@ -25,9 +25,7 @@ export default function TrainList() {
 						example.map((item: Itrain) => {
 							const id: string = uniqId();
 
-							return (
-								<Train item={item} id={id} />
-							);
+							return <Train item={item} id={id} />
 						})
 					}
 				</tbody>
