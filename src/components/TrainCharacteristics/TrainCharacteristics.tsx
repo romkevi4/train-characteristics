@@ -1,11 +1,11 @@
-import { IcharacteristicsProps } from '../../../models';
+import { ICharacteristicsProps } from '../../../models';
 
-export default function TrainCharacteristics({ characteristics, id }: IcharacteristicsProps) {
+export default function TrainCharacteristics({ characteristics }: ICharacteristicsProps) {
 	return (
-		<tr className="train" key={id}>
-			{/*<td className="train__element">{characteristics.engineAmperage}</td>*/}
-			{/*<td className="train__element">{characteristics.force}</td>*/}
-			{/*<td className="train__element">{characteristics.speed}</td>*/}
+		<tr className="train">
+			<td className="train__element">{characteristics.engineAmperage}</td>
+			<td className="train__element">{characteristics.force}</td>
+			<td className="train__element">{characteristics.speed}</td>
 		</tr>
 	);
 }

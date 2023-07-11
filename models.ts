@@ -1,26 +1,25 @@
-export interface IcharacteristicsOfTrain {
+export interface ICharacteristicsOfTrain {
 	speed: number,
 	force: number,
 	engineAmperage: number
 }
 
-export interface Itrain {
+export interface ITrain {
 	name: string,
 	description: string,
-	characteristics: IcharacteristicsOfTrain[]
+	characteristics: ICharacteristicsOfTrain[]
 }
 
-export interface ItrainProps {
-	item: Itrain,
-	key: string
-}
-
-export interface IcharacteristicsProps {
-	characteristics: IcharacteristicsOfTrain[],
-	id: string
-}
-
-export interface ItrainInfo {
+export interface ITrainInfo {
 	isOpen: boolean,
-	trainsArr: Itrain[]
+	activeCharacteristicsOfTrain: ICharacteristicsOfTrain[],
+	trainsArr: ITrain[]
+}
+
+export interface ITrainProps {
+	item: ITrain,
+}
+
+export interface ICharacteristicsProps {
+	characteristics: ICharacteristicsOfTrain,
 }

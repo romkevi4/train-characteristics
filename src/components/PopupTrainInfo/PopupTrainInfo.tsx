@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ItrainProps, IcharacteristicsOfTrain } from '../../../models';
+import { ITrainProps, ICharacteristicsOfTrain } from '../../../models';
 import TrainCharacteristics from '../TrainCharacteristics/TrainCharacteristics';
 
 import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
@@ -9,7 +9,13 @@ import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristics
 import './PopupTrainInfo.css';
 
 export default function PopupTrainInfo() {
-	const isOpen = useSelector((state: RootState) => state.trains.isOpen);
+	const { isOpen, activeCharacteristicsOfTrain } = useSelector((state: RootState) => ({
+		isOpen: state.trains.isOpen,
+		activeCharacteristicsOfTrain: state.trains.activeCharacteristicsOfTrain
+	}));
+
+	console.log(isOpen);
+	console.log(activeCharacteristicsOfTrain);
 
 	function openTrainInfo() {
 
@@ -18,7 +24,7 @@ export default function PopupTrainInfo() {
 	return (
 		<div className={`train-list ${!isOpen ? '' : 'train-list_inactive'}`}>
 			<h2 className="train-list__title">Поезда</h2>
-			<p></p>
+			<p className="train-list__title"></p>
 
 			<table className="train-list__table">
 				<thead className="train-list__thead">
@@ -30,11 +36,11 @@ export default function PopupTrainInfo() {
 				</thead>
 
 				<tbody className="train-list__tbody">
-					{/*{*/}
-					{/*	item.characteristics.map((elem: IcharacteristicsOfTrain) => {*/}
-					{/*		return <TrainCharacteristics characteristics={elem} id={id }/>*/}
-					{/*	})*/}
-					{/*}*/}
+					{
+						activeCharacteristicsOfTrain.map((elem: ICharacteristicsOfTrain, index: number) => {
+							return <TrainCharacteristics characteristics={elem} key={index }/>
+						})
+					}
 				</tbody>
 			</table>
 

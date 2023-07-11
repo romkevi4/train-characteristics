@@ -1,7 +1,7 @@
-import { Itrain } from '../../models';
+import { ITrain } from '../../models';
 
 
-export const example: Itrain[] = [
+export const example: ITrain[] = [
 	{
 		name: "Поезд №0",
 		description: "Описание 0",

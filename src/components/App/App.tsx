@@ -12,11 +12,13 @@ export default function App() {
     const getTrainsList = (obj: {trainsArr: []}) => dispatch(handleTrainsInfo(obj));
 
     useEffect(() => {
-        TrainsListApi().then(data => {
-            getTrainsList({
-                trainsArr: data
-            });
-        });
+        TrainsListApi()
+            .then(data => {
+                getTrainsList({
+                    trainsArr: data
+                });
+            })
+            .catch(err => console.error(`Ошибка: ${err.message}`));
     }, []);
 
     return (
