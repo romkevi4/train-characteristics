@@ -1,19 +1,17 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { example } from '../../utils/example';
-import { TrainProps, IcharacteristicsOfTrain } from '../../../models';
+import { RootState } from '../../store/store';
+import { ItrainProps, IcharacteristicsOfTrain } from '../../../models';
 import TrainCharacteristics from '../TrainCharacteristics/TrainCharacteristics';
 
-import { openTrainInfo } from '../../store/slices/trainCharacteristicsSlice';
+import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
 
 import './PopupTrainInfo.css';
 
-export default function PopupTrainInfo({ item, id }: TrainProps) {
-	// const [ isOpen, setIsOpen ] = useState(false);
-	// const isOpen = useSelector((state: any) => state.trainCharacteristics.isOpen);
+export default function PopupTrainInfo() {
+	const isOpen = useSelector((state: RootState) => state.trains.isOpen);
 
-	function findOfTrain() {
+	function openTrainInfo() {
 
 	}
 
@@ -32,11 +30,11 @@ export default function PopupTrainInfo({ item, id }: TrainProps) {
 				</thead>
 
 				<tbody className="train-list__tbody">
-					{
-						item.characteristics.map((elem: IcharacteristicsOfTrain) => {
-							return <TrainCharacteristics characteristics={elem} id={id }/>
-						})
-					}
+					{/*{*/}
+					{/*	item.characteristics.map((elem: IcharacteristicsOfTrain) => {*/}
+					{/*		return <TrainCharacteristics characteristics={elem} id={id }/>*/}
+					{/*	})*/}
+					{/*}*/}
 				</tbody>
 			</table>
 

@@ -10,17 +10,17 @@ export interface Itrain {
 	characteristics: IcharacteristicsOfTrain[]
 }
 
-
-export interface TrainProps {
+export interface ItrainProps {
 	item: Itrain,
-	id: string
+	key: string
 }
 
-export interface CharacteristicsProps {
+export interface IcharacteristicsProps {
 	characteristics: IcharacteristicsOfTrain[],
 	id: string
 }
 
 export interface ItrainInfo {
 	isOpen: boolean,
+	trainsArr: Itrain[]
 }

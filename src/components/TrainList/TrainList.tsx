@@ -1,13 +1,17 @@
+import { useSelector } from 'react-redux';
 import uniqId from 'uniqid';
 
-import Train from '../Train/Train';
-
-import { example } from '../../utils/example';
+import { RootState } from '../../store/store';
 import { Itrain } from '../../../models';
+
+import Train from '../Train/Train';
 
 import './TrainList.css';
 
 export default function TrainList() {
+	const trainsArr = useSelector((state: RootState) => state.trains.trainsArr);
+	console.log(trainsArr);
+
 	return (
 		<div className="train-list">
 			<h1 className="train-list__title">Поезда</h1>
@@ -22,10 +26,9 @@ export default function TrainList() {
 
 				<tbody className="train-list__tbody">
 					{
-						example.map((item: Itrain) => {
+						trainsArr.map((item: Itrain) => {
 							const id: string = uniqId();
-
-							return <Train item={item} id={id} />
+							return <Train item={item} key={id} />
 						})
 					}
 				</tbody>
