@@ -10,7 +10,6 @@ import './TrainList.css';
 
 export default function TrainList() {
 	const trainsArr = useSelector((state: RootState) => state.trains.trainsArr);
-	console.log(trainsArr);
 
 	return (
 		<div className="train-list">
