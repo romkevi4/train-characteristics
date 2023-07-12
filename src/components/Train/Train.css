@@ -18,3 +18,7 @@
   font-weight: 400;
   text-align: start;
 }
+
+.train__element_position_center {
+  text-align: center;
+}

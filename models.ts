@@ -23,3 +23,17 @@ export interface ITrainProps {
 export interface ICharacteristicsProps {
 	characteristics: ICharacteristicsOfTrain,
 }
+
+// export interface ITableStructureProps {
+// 	array: [],
+// 	isOpen: boolean,
+// 	trainListSize: string,
+// 	trainListInactive: string,
+// 	thPosition: stringб
+// 	Tag: React.FunctionComponent,
+// 	children: React.ReactNode
+// }
+
+export interface ITableSelectorProps {
+
+}
