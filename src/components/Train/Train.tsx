@@ -12,12 +12,13 @@ export default function Train({ item }: ITrainProps) {
 	//
 	const dispatch = useDispatch();
 
-	const setTrainInfo = (obj: {isOpen: boolean, activeCharacteristicsOfTrain: ICharacteristicsOfTrain[]}) => dispatch(openPopupWithTrainInfo(obj))
+	const setTrainInfo = (obj: {isOpen: boolean, activeCharacteristicsOfTrain: ICharacteristicsOfTrain[], trainName: string}) => dispatch(openPopupWithTrainInfo(obj))
 
 	function chooseTrain() {
 		setTrainInfo({
 			isOpen: true,
-			activeCharacteristicsOfTrain: item.characteristics
+			activeCharacteristicsOfTrain: item.characteristics,
+			trainName: item.name
 		})
 	}
 
