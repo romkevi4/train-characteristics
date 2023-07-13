@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { INewCharacteristicsOfTrain, INewTrain, ITrain, ITrainInfo } from '../../../models';
-import {Writable} from "stream";
+import { INewCharacteristicsOfTrain, INewTrain, ITrainInfo } from '../../../models';
 
 const initialState: ITrainInfo = {
     isOpen: false,
@@ -29,15 +28,13 @@ const trainsCharacteristicsSlice = createSlice({
 
         handleTrainsInfo(state, action: PayloadAction<{trainsArr: INewTrain[]}>) {
             state.trainsArr = action.payload.trainsArr;
-
-            // action.payload.trainsArr.forEach(item => {
-            //     state.trainsArr.push(item);
-            // });
         },
 
         handleValueNewSpeedOfTrain(state, action: PayloadAction<{newSpeed: number | undefined, _id: string}>) {
             const item: INewCharacteristicsOfTrain | undefined = state.activeCharacteristicsOfTrain.find((info) => info._id === action.payload._id);
-            item && (item.speed = action.payload.newSpeed);
+            if (item) {
+                item.speed = action.payload.newSpeed;
+            }
         },
 
         handleValueNewForcesOfTrain(state, action: PayloadAction<{newForce: number | undefined, _id: string}>) {

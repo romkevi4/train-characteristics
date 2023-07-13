@@ -34,5 +34,6 @@ export interface ITrainProps {
 }
 
 export interface ICharacteristicsProps {
-	elem: INewCharacteristicsOfTrain
+	elem: INewCharacteristicsOfTrain,
+	onChange: Function
 }

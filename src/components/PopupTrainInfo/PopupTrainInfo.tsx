@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ITrainProps, INewCharacteristicsOfTrain } from '../../../models';
+import {ITrainProps, INewCharacteristicsOfTrain } from '../../../models';
 import TrainCharacteristics from '../TrainCharacteristics/TrainCharacteristics';
 
 import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
@@ -22,6 +22,45 @@ export default function PopupTrainInfo() {
 	function onSubmit(evt: React.FormEvent) {
 		evt.preventDefault();
 
+		const speedLimitList: any[] = [];
+		activeCharacteristicsOfTrain.forEach((item: INewCharacteristicsOfTrain) => {
+			return speedLimitList.push(item.speed);
+		})
+
+		console.log(speedLimitList.sort((oneValue, TwoValue) => oneValue - TwoValue));
+	}
+
+	const checkId = (
+		name: string,
+		value: string,
+		characteristics: INewCharacteristicsOfTrain[],
+		param: number | undefined,
+		func: Function
+	) => {
+		const id = name.split('-')[1];
+
+		const item = characteristics.find((info) => info._id === id);
+
+		if (item) {
+			return func({
+				param: Number(value),
+				_id: id
+			});
+		}
+
+		return;
+	}
+
+	const onChange = (
+		name: string,
+		value: string,
+		characteristic: number | undefined,
+		funcSetCharacteristics: Function,
+		nameInput: string
+	) => {
+		if (name.startsWith(`${nameInput}-`)) {
+			checkId(name, value, activeCharacteristicsOfTrain, characteristic, funcSetCharacteristics);
+		}
 	}
 
 	return (
@@ -48,7 +87,7 @@ export default function PopupTrainInfo() {
 						{
 							activeCharacteristicsOfTrain.map((elem: INewCharacteristicsOfTrain) => {
 								return (
-									<TrainCharacteristics elem={elem} key={elem._id} />
+									<TrainCharacteristics elem={elem} key={elem._id} onChange={onChange} />
 								);
 							})
 						}
