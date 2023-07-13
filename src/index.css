@@ -1,0 +1,13 @@
+/* Style normalizer */
+@import url(./vendor/normalize/normalize.css);
+
+/* Fonts */
+@import url(./vendor/fonts/font.css);
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: #f6f8fa;
+  box-sizing: border-box;
+}
