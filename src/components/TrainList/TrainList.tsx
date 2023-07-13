@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ITrain } from '../../../models';
+import { INewTrain } from '../../../models';
 
 import Train from '../Train/Train';
 import PopupTrainInfo from '../PopupTrainInfo/PopupTrainInfo';
@@ -26,7 +26,7 @@ export default function TrainList() {
 
 					<tbody className="train-list__tbody">
 					{
-						trainsArr.map((item: ITrain, index: number) => <Train item={item} key={index} />)
+						trainsArr.map((item: INewTrain) => <Train item={item} key={item.id} />)
 					}
 					</tbody>
 				</table>

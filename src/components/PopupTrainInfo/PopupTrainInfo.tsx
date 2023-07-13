@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ITrainProps, ICharacteristicsOfTrain } from '../../../models';
+import { ITrainProps, INewCharacteristicsOfTrain } from '../../../models';
 import TrainCharacteristics from '../TrainCharacteristics/TrainCharacteristics';
 
 import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
@@ -14,9 +14,6 @@ export default function PopupTrainInfo() {
 		activeCharacteristicsOfTrain: state.trains.activeCharacteristicsOfTrain,
 		trainName: state.trains.trainName
 	}));
-
-	console.log(isOpen);
-	console.log(activeCharacteristicsOfTrain);
 
 	function openTrainInfo() {
 
@@ -49,10 +46,9 @@ export default function PopupTrainInfo() {
 
 					<tbody className="train-list__tbody">
 						{
-							activeCharacteristicsOfTrain.map((elem: ICharacteristicsOfTrain, index: number) => {
+							activeCharacteristicsOfTrain.map((elem: INewCharacteristicsOfTrain) => {
 								return (
-										<TrainCharacteristics characteristics={elem} key={index} />
-
+									<TrainCharacteristics elem={elem} key={elem._id} />
 								);
 							})
 						}

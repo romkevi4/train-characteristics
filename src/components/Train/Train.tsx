@@ -1,7 +1,7 @@
 import { useSelector, useDispatch} from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ICharacteristicsOfTrain, ITrainProps} from '../../../models';
+import { INewCharacteristicsOfTrain, ITrainProps} from '../../../models';
 
 import './Train.css';
 import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
@@ -12,7 +12,7 @@ export default function Train({ item }: ITrainProps) {
 	//
 	const dispatch = useDispatch();
 
-	const setTrainInfo = (obj: {isOpen: boolean, activeCharacteristicsOfTrain: ICharacteristicsOfTrain[], trainName: string}) => dispatch(openPopupWithTrainInfo(obj))
+	const setTrainInfo = (obj: {isOpen: boolean, activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[], trainName: string}) => dispatch(openPopupWithTrainInfo(obj))
 
 	function chooseTrain() {
 		setTrainInfo({

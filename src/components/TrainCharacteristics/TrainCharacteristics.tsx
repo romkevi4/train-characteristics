@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ICharacteristicsProps } from '../../../models';
+import {ICharacteristicsProps, INewCharacteristicsOfTrain} from '../../../models';
 
 import {
 	handleValueNewSpeedOfTrain,
@@ -9,52 +9,65 @@ import {
 	handleValueNewEngineAmperageOfTrain
 } from '../../store/slices/trainsCharacteristicsSlice';
 
-export default function TrainCharacteristics({ characteristics, key: id }: ICharacteristicsProps) {
-	const { newSpeed, newForce, newEngineAmperage } = useSelector((state: RootState) => ({
+export default function TrainCharacteristics({ elem }: ICharacteristicsProps) {
+	const { newSpeed, newForce, newEngineAmperage, activeCharacteristicsOfTrain } = useSelector((state: RootState) => ({
 		newSpeed: state.trains.newSpeed,
 		newForce: state.trains.newForce,
-		newEngineAmperage: state.trains.newEngineAmperage
+		newEngineAmperage: state.trains.newEngineAmperage,
+		activeCharacteristicsOfTrain: state.trains.activeCharacteristicsOfTrain
 	}));
 
 	const dispatch = useDispatch();
-	const setNewSpeed = (obj: {newSpeed: number}) => dispatch(handleValueNewSpeedOfTrain(obj));
-	const setNewForce = (obj: {newForce: number}) => dispatch(handleValueNewForcesOfTrain(obj));
-	const setNewEngineAmperage = (obj: {newEngineAmperage: number}) => dispatch(handleValueNewEngineAmperageOfTrain(obj));
+	const setNewSpeed = (obj: {newSpeed: number | undefined, _id: string}) => dispatch(handleValueNewSpeedOfTrain(obj));
+	const setNewForce = (obj: {newForce: number | undefined, _id: string}) => dispatch(handleValueNewForcesOfTrain(obj));
+	const setNewEngineAmperage = (obj: {newEngineAmperage: number | undefined, _id: string}) => dispatch(handleValueNewEngineAmperageOfTrain(obj));
+
+	const checkId = (
+		name: string,
+		value: string,
+		characteristics: INewCharacteristicsOfTrain[],
+		param: number | undefined,
+		func: Function
+	) => {
+		const id = name.split('-')[1];
+
+		const item = characteristics.find((info) => info._id === id);
+
+		if (item) {
+			return func({
+				param: Number(value),
+				_id: id
+			});
+		}
+
+		return;
+	}
 
 	const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = evt.target;
 
-		// setFormParams((previous) => ({
-		// 	...previous,
-		// 	[name]: value,
-		// }));
+		if (name.startsWith('engineAmperage-')) {
+			checkId(name, value, activeCharacteristicsOfTrain, newEngineAmperage, setNewEngineAmperage);
+		}
+		// 	const id = name.split('-')[1];
 		//
-		// if (name === 'email') {
-		// 	if (!validateEmail(value)) {
-		// 		evt.target.setCustomValidity('invalid email');
-		// 	} else {
-		// 		evt.target.setCustomValidity('');
+		// 	const item = activeCharacteristicsOfTrain.find((info) => info._id === id);
+		//
+		//
+		// 	if (item) {
+		// 		setNewEngineAmperage({
+		// 			newEngineAmperage: Number(value),
+		// 			_id: id
+		// 		});
 		// 	}
 		// }
-		//
-		// checkValidity(evt);
-		//
-		if (name === 'engineAmperage') {
-			setNewEngineAmperage({
-				newEngineAmperage: Number(value)
-			});
+
+		if (name.startsWith('force-')) {
+			checkId(name, value, activeCharacteristicsOfTrain, newForce, setNewForce);
 		}
 
-		if (name === 'force') {
-			setNewForce({
-				newForce: Number(value)
-			});
-		}
-
-		if (name === 'speed') {
-			setNewSpeed({
-				newSpeed: Number(value)
-			})
+		if (name.startsWith('speed-')) {
+			checkId(name, value, activeCharacteristicsOfTrain, newSpeed, setNewSpeed);
 		}
 	}
 
@@ -63,33 +76,33 @@ export default function TrainCharacteristics({ characteristics, key: id }: IChar
 			<td className="train__element train__element_position_center">
 				<input
 					type="text"
-					name="engineAmperage"
+					name={`engineAmperage-${elem._id}`}
 					onChange={onChange}
-					value={newEngineAmperage || characteristics.engineAmperage}
+					value={newEngineAmperage !== undefined ? newEngineAmperage : elem.engineAmperage}
 					required
 					autoComplete="off"
 					className="train__input"
 				/>
 			</td>
 			<td className="train__element train__element_position_center">
-				{/*{characteristics.force}*/}
+				{/*{elem.force}*/}
 				<input
 					type="text"
-					name="force"
+					name={`force-${elem._id}`}
 					onChange={onChange}
-					value={newForce || characteristics.force}
+					value={newForce !== undefined ? newForce : elem.force}
 					required
 					autoComplete="off"
 					className="train__input"
 				/>
 			</td>
 			<td className="train__element train__element_position_center">
-				{/*{characteristics.speed}*/}
+				{/*{elem.speed}*/}
 				<input
 					type="text"
-					name="speed"
+					name={`speed-${elem._id}`}
 					onChange={onChange}
-					value={newSpeed || characteristics.speed}
+					value={newSpeed !== undefined ? newSpeed : elem.speed}
 					required
 					autoComplete="off"
 					className="train__input"

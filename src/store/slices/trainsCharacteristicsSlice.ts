@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { ICharacteristicsOfTrain, ITrain, ITrainInfo } from '../../../models';
+import { INewCharacteristicsOfTrain, INewTrain, ITrain, ITrainInfo } from '../../../models';
+import {Writable} from "stream";
 
 const initialState: ITrainInfo = {
     isOpen: false,
     activeCharacteristicsOfTrain: [],
     trainName: '',
     trainsArr: [],
-    newSpeed: 0,
-    newForce: 0,
-    newEngineAmperage: 0
+    newSpeed: undefined,
+    newForce: undefined,
+    newEngineAmperage: undefined
 };
 
 const trainsCharacteristicsSlice = createSlice({
@@ -19,14 +20,14 @@ const trainsCharacteristicsSlice = createSlice({
     reducers: {
         openPopupWithTrainInfo(
             state,
-            action: PayloadAction<{isOpen: boolean, activeCharacteristicsOfTrain: ICharacteristicsOfTrain[], trainName: string}>
+            action: PayloadAction<{isOpen: boolean, activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[], trainName: string}>
         ) {
             state.isOpen = action.payload.isOpen;
             state.activeCharacteristicsOfTrain = action.payload.activeCharacteristicsOfTrain;
             state.trainName = action.payload.trainName
         },
 
-        handleTrainsInfo(state, action: PayloadAction<{trainsArr: []}>) {
+        handleTrainsInfo(state, action: PayloadAction<{trainsArr: INewTrain[]}>) {
             state.trainsArr = action.payload.trainsArr;
 
             // action.payload.trainsArr.forEach(item => {
@@ -34,16 +35,19 @@ const trainsCharacteristicsSlice = createSlice({
             // });
         },
 
-        handleValueNewSpeedOfTrain(state, action: PayloadAction<{newSpeed: number}>) {
-            state.newSpeed = action.payload.newSpeed;
+        handleValueNewSpeedOfTrain(state, action: PayloadAction<{newSpeed: number | undefined, _id: string}>) {
+            const item: INewCharacteristicsOfTrain | undefined = state.activeCharacteristicsOfTrain.find((info) => info._id === action.payload._id);
+            item && (item.speed = action.payload.newSpeed);
         },
 
-        handleValueNewForcesOfTrain(state, action: PayloadAction<{newForce: number}>) {
-            state.newForce = action.payload.newForce;
+        handleValueNewForcesOfTrain(state, action: PayloadAction<{newForce: number | undefined, _id: string}>) {
+            const item: INewCharacteristicsOfTrain | undefined = state.activeCharacteristicsOfTrain.find((info) => info._id === action.payload._id);
+            item && (item.force = action.payload.newForce);
         },
 
-        handleValueNewEngineAmperageOfTrain(state, action: PayloadAction<{newEngineAmperage: number}>) {
-            state.newEngineAmperage = action.payload.newEngineAmperage;
+        handleValueNewEngineAmperageOfTrain(state, action: PayloadAction<{newEngineAmperage: number | undefined, _id: string}>) {
+            const item: INewCharacteristicsOfTrain | undefined = state.activeCharacteristicsOfTrain.find((info) => info._id === action.payload._id);
+            item && (item.engineAmperage = action.payload.newEngineAmperage);
         }
     },
 });

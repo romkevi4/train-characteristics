@@ -1,7 +1,11 @@
 export interface ICharacteristicsOfTrain {
-	speed: number,
-	force: number,
-	engineAmperage: number
+	speed: number | undefined,
+	force: number | undefined,
+	engineAmperage: number | undefined
+}
+
+export interface INewCharacteristicsOfTrain extends ICharacteristicsOfTrain{
+	_id: string
 }
 
 export interface ITrain {
@@ -10,21 +14,25 @@ export interface ITrain {
 	characteristics: ICharacteristicsOfTrain[]
 }
 
+export interface INewTrain extends ITrain{
+	characteristics: INewCharacteristicsOfTrain[],
+	id: string
+}
+
 export interface ITrainInfo {
 	isOpen: boolean,
-	activeCharacteristicsOfTrain: ICharacteristicsOfTrain[],
+	activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[],
 	trainName: string,
-	trainsArr: ITrain[],
-	newSpeed: number,
-	newForce: number,
-	newEngineAmperage: number
+	trainsArr: INewTrain[],
+	newSpeed: number | undefined,
+	newForce: number | undefined,
+	newEngineAmperage: number | undefined
 }
 
 export interface ITrainProps {
-	item: ITrain,
+	item: INewTrain,
 }
 
 export interface ICharacteristicsProps {
-	characteristics: ICharacteristicsOfTrain,
-	key: number
+	elem: INewCharacteristicsOfTrain
 }
