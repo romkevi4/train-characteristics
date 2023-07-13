@@ -1,7 +1,9 @@
+import { useCallback } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import { ICharacteristicsProps, INewCharacteristicsOfTrain } from '../../../models';
+import { ICharacteristicsProps } from '../../../models';
 
 import {
 	handleValueNewSpeedOfTrain,
@@ -9,73 +11,79 @@ import {
 	handleValueNewEngineAmperageOfTrain
 } from '../../store/slices/trainsCharacteristicsSlice';
 
-export default function TrainCharacteristics({ elem, onChange }: ICharacteristicsProps) {
-	const { newSpeed, newForce, newEngineAmperage, activeCharacteristicsOfTrain } = useSelector((state: RootState) => ({
-		newSpeed: state.trains.newSpeed,
-		newForce: state.trains.newForce,
-		newEngineAmperage: state.trains.newEngineAmperage,
-		activeCharacteristicsOfTrain: state.trains.activeCharacteristicsOfTrain
-	}));
+const newSpeedSelector = (state: RootState) => state.trains.newSpeed;
+const newForceSelector = (state: RootState) => state.trains.newForce;
+const newEngineAmperageSelector = (state: RootState) => state.trains.newEngineAmperage;
+const activeCharacteristicsOfTrainSelector = (state: RootState) => state.trains.activeCharacteristicsOfTrain;
+
+const trainCharacteristicsSelector = createSelector(
+	newSpeedSelector,
+	newForceSelector,
+	newEngineAmperageSelector,
+	activeCharacteristicsOfTrainSelector,
+	(newSpeed, newForce, newEngineAmperage, activeCharacteristicsOfTrain) => ({
+		newSpeed,
+		newForce,
+		newEngineAmperage,
+		activeCharacteristicsOfTrain
+	})
+);
+
+export default function TrainCharacteristics({ elem, checkId }: ICharacteristicsProps) {
+	const { newSpeed, newForce, newEngineAmperage, activeCharacteristicsOfTrain } = useSelector(trainCharacteristicsSelector);
+	console.log('вызов');
 
 	const dispatch = useDispatch();
 	const setNewSpeed = (obj: {newSpeed: number | undefined, _id: string}) => dispatch(handleValueNewSpeedOfTrain(obj));
 	const setNewForce = (obj: {newForce: number | undefined, _id: string}) => dispatch(handleValueNewForcesOfTrain(obj));
 	const setNewEngineAmperage = (obj: {newEngineAmperage: number | undefined, _id: string}) => dispatch(handleValueNewEngineAmperageOfTrain(obj));
 
-	// const checkId = (
-	// 	name: string,
-	// 	value: string,
-	// 	characteristics: INewCharacteristicsOfTrain[],
-	// 	param: number | undefined,
-	// 	func: Function
-	// ) => {
-	// 	const id = name.split('-')[1];
-	//
-	// 	const item = characteristics.find((info) => info._id === id);
-	//
-	// 	if (item) {
-	// 		return func({
-	// 			param: Number(value),
-	// 			_id: id
-	// 		});
-	// 	}
-	//
-	// 	return;
-	// }
+	const onChange = useCallback(
+		(evt: React.ChangeEvent<HTMLInputElement>) => {
+			const { name, value } = evt.target;
 
-	// const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+			if (name.startsWith('engineAmperage')) {
+				checkId(name, value, activeCharacteristicsOfTrain, newEngineAmperage, setNewEngineAmperage);
+			}
+
+			if (name.startsWith('force')) {
+				checkId(name, value, activeCharacteristicsOfTrain, newForce, setNewForce);
+			}
+
+			if (name.startsWith('speed')) {
+				console.log(value);
+				checkId(name, value, activeCharacteristicsOfTrain, newSpeed, setNewSpeed);
+				console.log(activeCharacteristicsOfTrain);
+			}
+		},[
+			checkId,
+			activeCharacteristicsOfTrain,
+			newEngineAmperage,
+			setNewEngineAmperage,
+			newForce,
+			setNewForce,
+			newSpeed,
+			setNewSpeed
+		]
+	);
+
+	// function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
 	// 	const { name, value } = evt.target;
 	//
-	// 	if (name.startsWith('engineAmperage-')) {
+	// 	if (name.startsWith('engineAmperage')) {
 	// 		checkId(name, value, activeCharacteristicsOfTrain, newEngineAmperage, setNewEngineAmperage);
 	// 	}
 	//
-	// 	if (name.startsWith('force-')) {
+	// 	if (name.startsWith('force')) {
 	// 		checkId(name, value, activeCharacteristicsOfTrain, newForce, setNewForce);
 	// 	}
 	//
-	// 	if (name.startsWith('speed-')) {
+	// 	if (name.startsWith('speed')) {
+	// 		console.log(value);
 	// 		checkId(name, value, activeCharacteristicsOfTrain, newSpeed, setNewSpeed);
+	// 		console.log(activeCharacteristicsOfTrain);
 	// 	}
 	// }
-
-	function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
-		const { name, value } = evt.target;
-
-		onChange(name, value, newEngineAmperage,  setNewEngineAmperage);
-
-		if (name.startsWith('engineAmperage-')) {
-			onChange(name, value, activeCharacteristicsOfTrain, newEngineAmperage, setNewEngineAmperage);
-		}
-
-		if (name.startsWith('force-')) {
-			onChange(name, value, activeCharacteristicsOfTrain, newForce, setNewForce);
-		}
-
-		if (name.startsWith('speed-')) {
-			onChange(name, value, activeCharacteristicsOfTrain, newSpeed, setNewSpeed);
-		}
-	}
 
 	return (
 		<tr className="train">
@@ -91,7 +99,6 @@ export default function TrainCharacteristics({ elem, onChange }: ICharacteristic
 				/>
 			</td>
 			<td className="train__element train__element_position_center">
-				{/*{elem.force}*/}
 				<input
 					type="text"
 					name={`force-${elem._id}`}
@@ -103,7 +110,6 @@ export default function TrainCharacteristics({ elem, onChange }: ICharacteristic
 				/>
 			</td>
 			<td className="train__element train__element_position_center">
-				{/*{elem.speed}*/}
 				<input
 					type="text"
 					name={`speed-${elem._id}`}

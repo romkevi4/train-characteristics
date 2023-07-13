@@ -1,31 +1,35 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
-import {ITrainProps, INewCharacteristicsOfTrain } from '../../../models';
+import { INewCharacteristicsOfTrain } from '../../../models';
 import TrainCharacteristics from '../TrainCharacteristics/TrainCharacteristics';
-
-import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
 
 import './PopupTrainInfo.css';
 
+const isOpenSelector = (state: RootState) => state.trains.isOpen;
+const activeCharacteristicsOfTrainSelector = (state: RootState) => state.trains.activeCharacteristicsOfTrain;
+const trainNameSelector = (state: RootState) => state.trains.trainName;
+
+const popupTrainInfoSelector = createSelector(
+	isOpenSelector,
+	activeCharacteristicsOfTrainSelector,
+	trainNameSelector,
+	(isOpen, activeCharacteristicsOfTrain, trainName) => ({
+		isOpen,
+		activeCharacteristicsOfTrain,
+		trainName,
+	})
+);
+
 export default function PopupTrainInfo() {
-	const { isOpen, activeCharacteristicsOfTrain, trainName } = useSelector((state: RootState) => ({
-		isOpen: state.trains.isOpen,
-		activeCharacteristicsOfTrain: state.trains.activeCharacteristicsOfTrain,
-		trainName: state.trains.trainName
-	}));
-
-	function openTrainInfo() {
-
-	}
+	const { isOpen, activeCharacteristicsOfTrain, trainName } = useSelector(popupTrainInfoSelector);
 
 	function onSubmit(evt: React.FormEvent) {
 		evt.preventDefault();
 
 		const speedLimitList: any[] = [];
-		activeCharacteristicsOfTrain.forEach((item: INewCharacteristicsOfTrain) => {
-			return speedLimitList.push(item.speed);
-		})
+		activeCharacteristicsOfTrain.forEach((item: INewCharacteristicsOfTrain) => speedLimitList.push(item.speed));
 
 		console.log(speedLimitList.sort((oneValue, TwoValue) => oneValue - TwoValue));
 	}
@@ -38,28 +42,14 @@ export default function PopupTrainInfo() {
 		func: Function
 	) => {
 		const id = name.split('-')[1];
-
 		const item = characteristics.find((info) => info._id === id);
+		console.log(item);
 
 		if (item) {
-			return func({
+			func({
 				param: Number(value),
 				_id: id
 			});
-		}
-
-		return;
-	}
-
-	const onChange = (
-		name: string,
-		value: string,
-		characteristic: number | undefined,
-		funcSetCharacteristics: Function,
-		nameInput: string
-	) => {
-		if (name.startsWith(`${nameInput}-`)) {
-			checkId(name, value, activeCharacteristicsOfTrain, characteristic, funcSetCharacteristics);
 		}
 	}
 
@@ -68,9 +58,9 @@ export default function PopupTrainInfo() {
 			method="post"
 			onSubmit={onSubmit}
 			name="formTrainCharacteristics"
-			className="popup-train-info"
+			className={`popup-train-info ${isOpen ? '' : 'popup-train-info_inactive'}`}
 		>
-			<div className={`train-list train-list_size_big ${isOpen ? '' : 'train-list_inactive'}`}>
+			<div className="train-list train-list_size_big">
 				<h2 className="train-list__title">Поезда</h2>
 				<p className="train-list__title">{trainName}</p>
 
@@ -87,7 +77,7 @@ export default function PopupTrainInfo() {
 						{
 							activeCharacteristicsOfTrain.map((elem: INewCharacteristicsOfTrain) => {
 								return (
-									<TrainCharacteristics elem={elem} key={elem._id} onChange={onChange} />
+									<TrainCharacteristics elem={elem} key={elem._id} checkId={checkId} />
 								);
 							})
 						}

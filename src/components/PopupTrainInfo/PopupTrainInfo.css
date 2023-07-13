@@ -5,6 +5,10 @@
   justify-content: center;
 }
 
+.popup-train-info_inactive {
+  display: none;
+}
+
 .popup-train-info__form {
   width: 100%;
 

@@ -32,8 +32,22 @@ const trainsCharacteristicsSlice = createSlice({
 
         handleValueNewSpeedOfTrain(state, action: PayloadAction<{newSpeed: number | undefined, _id: string}>) {
             const item: INewCharacteristicsOfTrain | undefined = state.activeCharacteristicsOfTrain.find((info) => info._id === action.payload._id);
+            // item && (item.speed = action.payload.newSpeed);
+
             if (item) {
-                item.speed = action.payload.newSpeed;
+                // console.log(item);
+                // console.log(item.speed);
+                // console.log(state.activeCharacteristicsOfTrain);
+                // console.log(action.payload.newSpeed);
+                // console.log(action.payload._id);
+
+                const updatedItem: INewCharacteristicsOfTrain = {
+                    ...item,
+                    speed: action.payload.newSpeed
+                };
+                const updatedIndex = state.activeCharacteristicsOfTrain.findIndex((info) => info._id === action.payload._id);
+                state.activeCharacteristicsOfTrain[updatedIndex] = updatedItem;
+
             }
         },
 

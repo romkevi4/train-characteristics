@@ -1,25 +1,25 @@
-export interface ICharacteristicsOfTrain {
+interface ICharacteristicsOfTrain {
 	speed: number | undefined,
 	force: number | undefined,
 	engineAmperage: number | undefined
 }
 
-export interface INewCharacteristicsOfTrain extends ICharacteristicsOfTrain{
+interface INewCharacteristicsOfTrain extends ICharacteristicsOfTrain{
 	_id: string
 }
 
-export interface ITrain {
+interface ITrain {
 	name: string,
 	description: string,
 	characteristics: ICharacteristicsOfTrain[]
 }
 
-export interface INewTrain extends ITrain{
+interface INewTrain extends ITrain{
 	characteristics: INewCharacteristicsOfTrain[],
 	id: string
 }
 
-export interface ITrainInfo {
+interface ITrainInfo {
 	isOpen: boolean,
 	activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[],
 	trainName: string,
@@ -29,11 +29,21 @@ export interface ITrainInfo {
 	newEngineAmperage: number | undefined
 }
 
-export interface ITrainProps {
+interface ITrainProps {
 	item: INewTrain,
 }
 
-export interface ICharacteristicsProps {
+interface ICharacteristicsProps {
 	elem: INewCharacteristicsOfTrain,
-	onChange: Function
+	checkId: Function
+}
+
+export type {
+	ICharacteristicsOfTrain,
+	INewCharacteristicsOfTrain,
+	ITrain,
+	INewTrain,
+	ITrainInfo,
+	ITrainProps,
+	ICharacteristicsProps
 }

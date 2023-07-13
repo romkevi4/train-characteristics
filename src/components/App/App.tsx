@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import uniqId from 'uniqid';
 
+import { TrainsListApi } from '../../API/TrainsListApi';
 import { ITrain, INewTrain, ICharacteristicsOfTrain } from '../../../models';
 import { handleTrainsInfo } from '../../store/slices/trainsCharacteristicsSlice';
-import { TrainsListApi } from '../../API/TrainsListApi';
-
 import TrainList from '../TrainList/TrainList';
 
 import './App.css';

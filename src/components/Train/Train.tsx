@@ -1,18 +1,18 @@
-import { useSelector, useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { RootState } from '../../store/store';
 import { INewCharacteristicsOfTrain, ITrainProps} from '../../../models';
-
-import './Train.css';
 import { openPopupWithTrainInfo } from '../../store/slices/trainsCharacteristicsSlice';
 
+import './Train.css';
+
 export default function Train({ item }: ITrainProps) {
-	const isOpen = useSelector((state: RootState) => state.trains.isOpen);
-	// // const [ train, setTrain ] = useState({});
-	//
 	const dispatch = useDispatch();
 
-	const setTrainInfo = (obj: {isOpen: boolean, activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[], trainName: string}) => dispatch(openPopupWithTrainInfo(obj))
+	const setTrainInfo = (obj: {
+		isOpen: boolean,
+		activeCharacteristicsOfTrain: INewCharacteristicsOfTrain[],
+		trainName: string
+	}) => dispatch(openPopupWithTrainInfo(obj))
 
 	function chooseTrain() {
 		setTrainInfo({
